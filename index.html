@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Young Professional Program - Docker</title>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/ordina.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
+	<link
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <script src="js/head.min.js"></script>
+    <!--Add support for earlier versions of Internet Explorer -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Docker</h1>
+                <h3>Young Professional Program</h3>
+                <img src="img/jworks-logo.png" style="vertical-align: bottom;" width="22.5%"/>
+            </section>
+
+            <section>
+                <h2>Hi, my name is Yolan.</h2>
+                <p>
+                    <span class="fragment" data-fragment-index="0">Niel</span><br/>
+                    <span class="fragment" data-fragment-index="1">Toegepaste Informatica @ KdG Antwerpen</span><br/>
+                    <span class="fragment" data-fragment-index="2">Ordina Belgium since 2019 (previously Cronos Groep)</span><br />
+                    <span class="fragment" data-fragment-index="3">Currently working for Smals</span>
+                </p>
+            </section>
+
+            <section>
+                <h2>Docker</h2>
+                <h4>What is Docker?</h4>
+                <h6>A quick summary</h6>
+            </section>
+
+            <section>
+                <h2>Docker</h2>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">An open source containerization platform</li>
+                    <li class="fragment" data-fragment-index="1">Allows a developer to package an application and its dependencies inside a container</li>
+                    <li class="fragment" data-fragment-index="2">Simplifies and automates the process of building and deploying of software</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Images</h2>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">An image is a read-only template that is made to be run as a container</li>
+                    <li class="fragment" data-fragment-index="1">Exists of a collection of layers that contain necessary data (ex. dependencies, libraries, JAR file, ...)</li>
+                    <li class="fragment" data-fragment-index="2">Stored on a remote or local registry which you use to pull images from</li>
+                    <li class="fragment" data-fragment-index="3">Images are meant to be immutable and dynamic, they should be able to run on every environment</li>
+                    <li class="fragment" data-fragment-index="4">--> Externalize your configuration!</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Images</h2>
+                <h3>Layers</h3>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">An image is a collection of layers</li>
+                    <li class="fragment" data-fragment-index="1">Every layer is read-only and immutable</li>
+                    <li class="fragment" data-fragment-index="2">Layers can be shared across different images</li>
+                    <li class="fragment" data-fragment-index="3">Each instruction in a Dockerfile creates a new layer</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Images</h2>
+                <h3>Layers</h3>
+                <h4>See for yourself:</h4>
+                <pre class="fragment" data-fragment-index="0"><code data-trim>
+docker pull bash
+					</code></pre>
+            </section>
+
+            <section>
+                <h2>Containers</h2>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">Containers contain the application and all of its dependencies needed to run and execute</li>
+                    <li class="fragment" data-fragment-index="1">It basically is an instance of a Docker image</li>
+                    <li class="fragment" data-fragment-index="2">It is a process which runs on the host (ex. your device)</li>
+                    <li class="fragment" data-fragment-index="3">Process is detached from host and runs its own networking logic, file system, and own detached process tree</li>
+                    <li class="fragment" data-fragment-index="4">Cannot exist without a Docker image</li>
+                    <li class="fragment" data-fragment-index="5">Adds a writable layer which can temporarily persist data on</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dockerfile</h2>
+                <ul>
+                    <li class="fragment" data-fragment-index="0">Literally named <i>Dockerfile</i>, usually at the root of your application directory</li>
+                    <li class="fragment" data-fragment-index="1">File that is responsible for building your Docker image</li>
+                    <li class="fragment" data-fragment-index="2">uses instructions such as FROM, CMD, ENTRYPOINT, COPY, ...</li>
+                    <li class="fragment" data-fragment-index="3">Used by the Docker CLI to run the building process</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dockerfile</h2>
+                <h3>Quick example</h3>
+                <pre class="fragment" data-fragment-index="0"><code data-trim>
+# This is the starting image, the image where we want to build on.
+FROM adoptopenjdk/openjdk11:alpine
+# OR if you want to use the official openjdk image:
+# FROM openjdk:11-jdk-slim
+
+# set a directory for the app
+WORKDIR /opt
+
+# copy JAR file to the container
+COPY my-fresh-jar-file.jar app.jar
+
+# define the port number the container should expose
+# This is purely for documentation purposes. This does not really expose the
+port. This needs to be done in the run command.
+EXPOSE 8080
+
+# Define an entrypoint in the container. This ensures that the container
+# will run this command after startup.
+ENTRYPOINT ["java","-jar","/app.jar"]
+					</code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Most used commands</h3>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker run</h3>
+                <span>Creates a container based on an image and starts the container</span>
+                <pre><code data-trim>
+                    docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker run</h3>
+                <span>Example with publishing port 8080 and setting the name of the container (important in networking):</span>
+                <pre><code data-trim>
+                    docker run -p 8080:8080 --name=petclinic springcommunity/spring-framework-petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker run</h3>
+                <span>Example with publishing port 8080 and setting the name of the container (important in networking) and detached from the foreground:</span>
+                <pre><code data-trim>
+                    docker run -p 8080:8080 -d --name=petclinic springcommunity/spring-framework-petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>environment variables</h3>
+                <span>You can run your container with specific environment variables that you specify in order to provide a dynamic configuration.</span><br/>
+                <span>You can either use -e, --env or --env-file to provide a set of environment variables.</span>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>environment variables</h3>
+                <span>Example with setting environment variables with -e or --env:</span>
+                <pre><code data-trim>
+docker run -p 8080:8080 --name=petclinic -e "DB_URL=mysql://localhost:3306/mysqldb"
+-e "TEST_ENV=test" springcommunity/spring-framework-petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>environment variables</h3>
+                <span>Example with setting environment variables with --env-file:</span>
+                <pre><code data-trim>
+docker run -p 8080:8080 --name=petclinic --env-file=docker.env
+springcommunity/spring-framework-petclinic
+                </code></pre>
+                <span>Where <i>docker.env</i> contains:</span>
+                <pre><code data-trim>
+DB_URL=mysql://localhost:3306/mysqldb
+TEST_ENV=test
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker pull</h3>
+                <span>Pulls (downloads) an image to your local machine</span>
+                <pre><code data-trim>
+                    docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker pull</h3>
+                <span>Example:</span>
+                <pre><code data-trim>
+                    docker pull springcommunity/spring-framework-petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker push</h3>
+                <span>Pushes (uploads) an image to a local or remote Docker registry</span>
+                <pre><code data-trim>
+                    docker push [OPTIONS] NAME[:TAG]
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker push</h3>
+                <span>Example:</span>
+                <pre><code data-trim>
+                    docker push springcommunity/spring-framework-petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker build</h3>
+                <span>Builds a new Docker image with the specified image tag based on the instructions in the Dockerfile</span></br>
+                <span>If you do not specify a tag, it will build by default with tag <i>latest</i></span>
+                <pre><code data-trim>
+                    docker build [OPTIONS] PATH | URL | -
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker build</h3>
+                <span>Example:</span>
+                <pre><code data-trim>
+                    docker build -t springcommunity/spring-framework-petclinic
+                </code></pre>
+                <span>Example with a specified tag:</span>
+                <pre><code data-trim>
+                    docker build -t springcommunity/spring-framework-petclinic:v1
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker logs</h3>
+                <span>Displays the application logs of a container existing on your device</span>
+                <pre><code data-trim>
+                     docker logs [OPTIONS] CONTAINER
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Docker logs</h3>
+                <span>Example:</span>
+                <pre><code data-trim>
+                    docker logs petclinic
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Docker CLI</h2>
+                <h3>Troubleshooting</h3>
+                <span class="fragment" data-fragment-index="0">Sometimes, things in Docker don't go the way that you want.<br/>
+                In any case, you can open a bash shell in an existing (and running!) container.</span>
+                <pre class="fragment" data-fragment-index="1"><code data-trim>
+                    docker exec -it petclinic bash
+                </code></pre>
+                <span class="fragment" data-fragment-index="2">If you can't get your container up and running, you can always spin up a new container and change it's entrypoint to a bash shell.</span>
+                <pre class="fragment" data-fragment-index="3"><code data-trim>
+                    docker run -it --entrypoint /bin/bash springcommunity/petclinic
+                </code></pre>
+                <span class="fragment" data-fragment-index="3">Notice how we use an image name with the docker run command, and a container name with the exec command.</span>
+            </section>
+
+            <section>
+                <h2>Exercises</h2>
+                <span>https://github.com/yolanv/spring-boot-todo-demo</span>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <span class="fragment" data-fragment-index="0">In a microservice architecture environment, multiple applications need to be able to communicate with each other in order to function correctly.</span><br/>
+                <span class="fragment" data-fragment-index="1">Until now, we have only seen how to deploy one single application that is standalone. How about multiple applications?</span>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <span class="fragment" data-fragment-index="0">Docker provides its own networking infrastructure, making it able to connect different containers and act as a network through DNS resolution.</span></br>
+                <span class="fragment" data-fragment-index="1">You can do so by creating a new network with the Docker CLI and starting your containers within the new network.</span>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <span>Creating a new network with the docker CLI:</span>
+                <pre><code data-trim>docker network create NETWORK_NAME</code></pre>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <span>Starting a new container, running on the created network:</span>
+                <pre><code data-trim>
+docker run --name=petclinic --network="NETWORK_NAME"
+springcommunity/spring-framework-petclinic</code></pre>
+                <span class="fragment" data-fragment-index="0">It's important to provide a name (<i>it always is!</i>), otherwise you will have difficulties finding the correct container!</span>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <h3>Exercise</h3>
+            </section>
+
+            <section>
+                <h2>Networking</h2>
+                <span>Run the following Docker images in a network (called <i>fakenet</i>, you have to create it!) and make sure the applications are able to interact with each other.</span><br/>
+            </section>
+
+            <section>
+                <ol>
+                    <li class="fragment" data-fragment-index="0"><i>rabbitmq</i></li>
+                    <ul class="fragment" data-fragment-index="0">
+                        <li>Use image: <b>rabbitmq:3.7.4-management</b></li>
+                        <li>Attached to fakenet network</li>
+                        <li>Make sure it is named <i>rabbitmq</i></li>
+                        <li>Published port 15672</li>
+                    </ul>
+                    <li class="fragment" data-fragment-index="1"><i>fakecoin-server</i></li>
+                    <ul class="fragment" data-fragment-index="1">
+                        <li>Use image: <b>tomverelst/fakecoin-server</b></li>
+                        <li>Attached to fakenet network</li>
+                        <li>Make sure it is named <i>fakecoin-server</i></li>
+                        <li>Published port 8080</li>
+                        <li>set environment variable: SPRING_RABBIT_HOST=rabbitmq</li>
+                    </ul>
+                    <li class="fragment" data-fragment-index="2"><i>fakecoin-ui</i></li>
+                    <ul class="fragment" data-fragment-index="2">
+                        <li>Use image: <b>tomverelst/fakecoin-ui</b></li>
+                        <li>Attached to fakenet network</li>
+                        <li>Name not important here, but always wise to name it!</li>
+                        <li>Published port 3000</li>
+                        <li>set environment variable: RABBIT_URL=amqp://rabbitmq</li>
+                        <li>set environment variable: FAKECOIN_HOST=fakecoin-server</li>
+                    </ul>
+                </ol>
+            </section>
+
+            <section>
+                <h2>Thank you!</h2>
+            </section>
+
+            <!-- **********
+                DO NOT REMOVE
+            ********** -->
+
+            <section style="text-align: left;" data-background="img/jworks-wallpaper-3.jpg"></section>
+        </div>
+    </div>
+    <script src="js/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            transition: 'convex',
+            dependencies: [
+                // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+                {
+                    src: 'lib/js/classList.js',
+                    condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                // Interpret Markdown in <section> elements
+                {
+                    src: 'plugin/markdown/marked.js',
+                    condition: function() {
+                        return !!document.querySelector( '[data-markdown]' );
+                    }
+                },
+                {
+                    src: 'plugin/markdown/markdown.js',
+                    condition: function() {
+                        return !!document.querySelector( '[data-markdown]' );
+                    }
+                },
+                // Syntax highlight for <code> elements
+                {
+                    src: 'plugin/highlight/highlight.js',
+                    async: true,
+                    callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                // Zoom in and out with Alt+click
+                {
+                    src: 'plugin/zoom-js/zoom.js',
+                    async: true
+                },
+                // Speaker notes
+                {
+                    src: 'plugin/notes/notes.js',
+                    async: true
+                }
+        ]
+        });
+    </script>
+</body>
+
+</html>
